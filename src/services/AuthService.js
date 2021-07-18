@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ENV } from './../constants/environment'
-const apiUrl = `${ENV.development.apiUrl}/users`;
+const apiUrl = `${ENV.prod.apiUrl}/users`;
 
 
 const AuthService = {

@@ -5,8 +5,6 @@ import { TextInput } from "../form/TextInput";
 import { Formik } from "formik";
 import { Form } from "formik";
 import { Error } from "../form/Error";
-import { useContext } from "react";
-import { userContext } from "../../context/UserContext";
 import AuthService from "../../services/AuthService";
 import { Link } from "react-router-dom";
 import { Button, Grid, Typography } from "@material-ui/core";
@@ -30,7 +28,6 @@ export const RegisterUserForm = () => {
           initialValues={{
             name: "",
             email: "",
-            role: "",
             password: "",
             passwordConfirmation: "",
           }}
