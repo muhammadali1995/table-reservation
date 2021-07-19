@@ -4,15 +4,18 @@ import { Header } from "../layout/Header";
 import { CreateRestaurant } from './../restaurant/Create';
 import RestaurantService from "../../services/RestaurantService";
 import Loader from './../layout/Loader';
+import { useDispatch, useSelector } from "react-redux";
+import restaurantAction from "../../states/actions/restaurantAction";
 export const Home = () => {
-    const [restaurant, setRestaurant] = useState(null);
+    const restaurant = useSelector(state => state.restaurant);
+    const dispatch = useDispatch();
     const [isBusy, setBusy] = useState(true)
 
     useEffect(() => {
         RestaurantService.fetchMyRestaurant().then(response => {
-            setRestaurant(response.data);
+            dispatch(restaurantAction(response.data));
             setBusy(false);
-        })
+        });
     }, []);
     return (
         <>

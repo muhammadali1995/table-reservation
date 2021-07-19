@@ -1,7 +1,8 @@
-import {createStore} from 'redux';
-import userReducer from "./reducers/userReducer";
+import { createStore } from 'redux';
+import reducer from './reducers/index';
+import user from './reducers/user';
 
-function configureStore(state = {user: null}) {
-    return createStore(userReducer, state);
+function configureStore() {
+    return createStore(reducer);
 }
 export default configureStore;

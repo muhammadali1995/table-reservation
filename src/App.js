@@ -7,7 +7,7 @@ import { ENV } from "./constants/environment";
 import { useEffect, useState } from "react";
 import { Home } from './components/home/Home';
 import RestaurantEditor from './components/restaurant/Editor';
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import userAction from './states/actions/userAction';
 import { CircularProgress } from '@material-ui/core';
 
@@ -29,9 +29,11 @@ axios.interceptors.request.use(
 
 
 
-function App({ user, userAction }) {
+function App({ userAction }) {
   const [loading, setLoading] = useState(true)
+
   const dispatch = useDispatch();
+  const { user } = useSelector(state => state.user);
 
   useEffect(() => {
     let currentUser = localStorage.getItem("user");
@@ -53,6 +55,7 @@ function App({ user, userAction }) {
                 <Route path="/editor"><RestaurantEditor /></Route>
               </>
             ) : (
+
               <>
                 <Route path="/"> <Redirect to="/login" /></Route>
                 <Route path="/login" component={LoginForm}></Route>

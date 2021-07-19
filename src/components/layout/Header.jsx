@@ -10,12 +10,8 @@ export function Header() {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        console.log(user);
-    }, [user])
-
     const logout = () => {
-       dispatch(userAction(null));
+        dispatch(userAction(null));
         AuthService.logout();
         history.push('/login');
     }
