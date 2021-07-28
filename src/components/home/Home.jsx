@@ -16,7 +16,7 @@ export const Home = () => {
             dispatch(restaurantAction(response.data));
             setBusy(false);
         });
-    }, []);
+    }, [dispatch]);
     return (
         <>
             {isBusy ?

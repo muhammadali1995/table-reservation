@@ -1,4 +1,4 @@
-import { DialogContent, Dialog, DialogTitle, Typography, Button, Box } from "@material-ui/core";
+import { DialogContent, Dialog, DialogTitle, Typography, Button, Box, IconButton } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
@@ -7,30 +7,52 @@ import TableService from "../../../services/TableService";
 import { Error } from "../../form/Error";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
+import { Delete } from "@material-ui/icons";
 import tableAction from './../../../states/actions/tableAction';
 
-const CreateTable = ({ number, show, handleClose, tableAction, tablesState }) => {
+
+const EditTable = ({ table, show, handleClose, tableAction, tablesState }) => {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
 
-    const pushToTables = (table) => {
+    const updateTable = (table) => {
         const tables = tablesState.tables;
-        tables.push(table);
+        let index = tables.findIndex(t => t._id === table._id)
+        tables[index] = table;
         tableAction(tables);
+    }
+
+    const deleteTable = () => {
+        if (window.confirm('Are you sure delete this table')) {
+            TableService.delete(table._id).then(() => {
+                const tables = tablesState.tables;
+                let index = tables.findIndex(t => t._id === table._id)
+                tables.splice(index, 1);
+                tableAction(tables);
+                handleClose();
+            }, error => {
+                console.log(error);
+            });
+        }
     }
 
     return (
         <>
             <Dialog open={show} onClose={handleClose} aria-labelledby='create new table'>
                 <DialogTitle>
-                    <Typography>Add New Table</Typography>
+                    <Typography>Edit Table</Typography>
                 </DialogTitle>
                 <DialogContent>
                     {error ? <Error message={error} /> : ""}
+                    <Typography>Table {table.referenceNumber}
+                        <IconButton onClick={deleteTable}>
+                            <Delete color='secondary' />
+                        </IconButton>
+                    </Typography>
                     <Formik
                         initialValues={{
-                            referenceNumber: number,
-                            seats: 0,
+                            referenceNumber: table.referenceNumber,
+                            seats: table.seats,
                         }}
                         validationSchema={Yup.object({
                             seats: Yup.number()
@@ -40,9 +62,9 @@ const CreateTable = ({ number, show, handleClose, tableAction, tablesState }) =>
                         })}
                         onSubmit={async (formData) => {
                             setSubmitting(true);
-                            TableService.create(formData).then(
+                            TableService.update(table._id, formData).then(
                                 (res) => {
-                                    pushToTables(res.data);
+                                    updateTable(res.data);
                                     setSubmitting(false);
                                     handleClose();
                                 },
@@ -70,7 +92,7 @@ const CreateTable = ({ number, show, handleClose, tableAction, tablesState }) =>
                                     variant='contained'
                                     color='primary'
                                     type="submit">
-                                    Add
+                                    Save
                                 </Button>
                                 <Button variant='contained' color='secondary' onClick={handleClose}>Cancel</Button>
                             </Box>
@@ -94,4 +116,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     tableAction
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTable);
+export default connect(mapStateToProps, mapDispatchToProps)(EditTable);

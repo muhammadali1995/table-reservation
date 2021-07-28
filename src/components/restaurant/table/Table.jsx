@@ -1,27 +1,34 @@
 import "./../Restaurant.css";
-import CreateTable from "./Create";
-import { useState } from "react";
-import { IconButton, Box } from "@material-ui/core";
-import { AddCircle } from '@material-ui/icons';
-const Table = ({ number }) => {
+import { IconButton, Box, Typography } from "@material-ui/core";
+import { AddCircle, Edit } from '@material-ui/icons';
+const Table = ({ number, table, setNumber, setShow, setTable, setShowEdit }) => {
 
-    const [show, setShow] = useState(false);
+    const handleShow = (number) => {
+        setNumber(number);
+        setShow(true);
+    }
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleEditShow = () => {
+        setTable(table);
+        setShowEdit(true);
+    };
 
     return (
         <>
             <Box border={1} width={1} flexGrow={1}>
-                <div>
-                    Box # {number}
-                    <br></br>
-                    <IconButton variant='light' onClick={handleShow}>
+                Table# {number}
+                <br />
+                {table ?
+                    <>
+                        <Typography>Seats: {table.seats}</Typography>
+                        <IconButton onClick={handleEditShow}>
+                            <Edit color='primary' />
+                        </IconButton>
+                    </>
+                    : (<IconButton variant='light' onClick={() => handleShow(number)}>
                         <AddCircle color="primary" />
-                    </IconButton>
-                </div>
+                    </IconButton>)}
             </Box>
-            <CreateTable number={number} show={show} handleClose={handleClose} />
         </>
     )
 }

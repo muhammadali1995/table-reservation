@@ -3,7 +3,6 @@ import AuthService from './../../services/AuthService';
 import { AppBar, Toolbar, Box, Typography, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import userAction from "../../states/actions/userAction";
-import { useEffect } from "react";
 
 export function Header() {
     const user = useSelector(state => state.user)
