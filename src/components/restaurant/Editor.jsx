@@ -1,4 +1,4 @@
-import "./Restaurant.css";
+import "./../../index.css";
 import { Grid, Typography } from "@material-ui/core";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";

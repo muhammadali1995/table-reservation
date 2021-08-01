@@ -7,9 +7,11 @@ import { ENV } from "./constants/environment";
 import { useEffect, useState } from "react";
 import { Home } from './components/home/Home';
 import RestaurantEditor from './components/restaurant/Editor';
+import RestaurantReservation from "./components/reservation/Reservation";
 import { connect, useDispatch, useSelector } from "react-redux";
 import userAction from './states/actions/userAction';
 import { CircularProgress } from '@material-ui/core';
+import ListReservations from "./components/reservation/list/List";
 
 
 axios.interceptors.request.use(
@@ -53,6 +55,8 @@ function App({ userAction }) {
               <>
                 <Route path="/" match='exact'><Home /></Route>
                 <Route path="/editor"><RestaurantEditor /></Route>
+                <Route path='/reservations' exact><RestaurantReservation /></Route>
+                <Route path='/reservations/:id'><ListReservations /></Route>
               </>
             ) : (
 

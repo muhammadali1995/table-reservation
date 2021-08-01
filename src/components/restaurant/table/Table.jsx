@@ -1,4 +1,3 @@
-import "./../Restaurant.css";
 import { IconButton, Box, Typography } from "@material-ui/core";
 import { AddCircle, Edit } from '@material-ui/icons';
 const Table = ({ number, table, setNumber, setShow, setTable, setShowEdit }) => {

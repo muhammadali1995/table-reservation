@@ -1,3 +1,3 @@
-export const Error = ({ message }) => {
-    return <div className="alert alert-danger"> {message} </div>;
+export const Error = (error) => {
+    return <div className="alert alert-danger"> {error.message} </div>;
   };

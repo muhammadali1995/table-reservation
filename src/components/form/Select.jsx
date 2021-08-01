@@ -1,12 +1,14 @@
 import { useField } from "formik";
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
 export const CustomSelect = ({ label, ...props }) => {
   const [field, meta] = useField(props);
 
   return (
     <>
-      <label className="mt-2" htmlFor={props.id || props.name}>{label}</label>
-      <select {...field} {...props} />
+      <InputLabel className="mt-2" htmlFor={props.id || props.name}>{label}</InputLabel>
+      <Select {...field} {...props} />
       {meta.touched && meta.error ? (
         <div className="alert alert-danger mt-1">{meta.error}</div>
       ) : null}
