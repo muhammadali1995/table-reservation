@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { default as reservationService } from '../../../services/ReservationService';
 import { default as tableService } from '../../../services/TableService';
 import CreateReservation from "./Create";
+import EditReservation from './Edit';
 import ListOfReservations from "./ListOfReservations";
 
 const ListReservations = () => {
@@ -19,7 +20,10 @@ const ListReservations = () => {
     const [table, setTable] = useState(null);
     const [filters, setFilters] = useState({ table: null, time: 'all' });
     const [reservations, setReservations] = useState([]);
+    const [reservation, setReservation] = useState(null);
     const [showCreateReservation, setShowCreateReservation] = useState(false);
+    const [showEditReservation, setShowEditReservation] = useState(false);
+    const [error, setError] = useState('');
     const { id } = useParams();
 
     useEffect(() => {
@@ -33,7 +37,25 @@ const ListReservations = () => {
     }, [id]);
 
 
-    const fetchReservations = async (filters) => {
+    const deleteReservation = async (id) => {
+        const isConfirmed = window.confirm('Are you sure to delete this reservation')
+
+        if (!isConfirmed) return;
+
+        try {
+            await reservationService.delete(id);
+            fetchReservations();
+        } catch (respError) {
+            setError(respError.data);
+        }
+    }
+
+    const editReservation = (reservation) => {
+        setReservation(reservation);
+        setShowEditReservation(true);
+    }
+
+    const fetchReservations = async () => {
         setFilters(prevState => { prevState['table'] = id; return prevState; })
         const res = await reservationService.fetchByTable(filters);
         setReservations(res.data);
@@ -49,7 +71,15 @@ const ListReservations = () => {
 
     const openCreateReservationModal = () => setShowCreateReservation(true);
 
-    const handleClose = () => setShowCreateReservation(false);
+    const handleClose = () => {
+        setShowCreateReservation(false);
+        fetchReservations();
+    };
+
+    const handleEditClose = () => {
+        setShowEditReservation(false);
+        fetchReservations();
+    }
 
     const filterView = (
         <Box component='div' width='200px'>
@@ -75,8 +105,9 @@ const ListReservations = () => {
         <Box component='div' display='flex' justifyContent='flex-end'>
             {filterView}
         </Box>
-        <ListOfReservations reservations={reservations} />
+        <ListOfReservations reservations={reservations} deleteReservation={deleteReservation} editReservation={editReservation} />
         {showCreateReservation ? <CreateReservation table={table} show={showCreateReservation} handleClose={handleClose} /> : ''}
+        {reservation ? <EditReservation reservation={reservation} show={showEditReservation} handleClose={handleEditClose} /> : ''}
         <Link href='/reservations' color='primary'>Back</Link>
     </Box>
     );

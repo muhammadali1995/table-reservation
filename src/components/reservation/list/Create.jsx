@@ -8,6 +8,7 @@ import { Error } from "../../form/Error";
 import { CustomSelect } from "../../form/Select";
 import { BOOKING_TIMES } from './../../../constants/bookingTimes';
 import { default as reservationService } from './../../../services/ReservationService';
+import * as moment from 'moment';
 
 const CreateReservation = ({ show, handleClose, table }) => {
     const [error, setError] = useState('');
@@ -37,6 +38,12 @@ const CreateReservation = ({ show, handleClose, table }) => {
         onSubmit={async (formData) => {
             setSubmitting(true);
             setError('');
+            const { date } = formData;
+            const { start } = formData;
+            const datetime = moment(date + ' ' + start).format('');
+
+            formData.date = datetime;
+            
             reservationService.create(formData).then(res => {
                 setSubmitting(false);
                 handleClose();
