@@ -6,6 +6,8 @@ import { default as tableService } from "../../services/TableService";
 import { bindActionCreators } from "redux";
 import tableAction from './../../states/actions/tableAction';
 import Tables from './table/Tables';
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const RestaurantEditor = ({ tablesState, tableAction }) => {
     const [loading, setLoading] = useState(true);
@@ -31,7 +33,9 @@ const RestaurantEditor = ({ tablesState, tableAction }) => {
 
     return loading ? (<Typography>Loading</Typography>) :
         (<Grid margin={1} container display='grid' className="grid-container" >
-            <Tables referenceNumbers={referenceNumbers} existingTables={existingTables} />
+            <DndProvider backend={HTML5Backend}>
+                <Tables referenceNumbers={referenceNumbers} existingTables={existingTables} />
+            </DndProvider>
         </Grid>)
 
 }
