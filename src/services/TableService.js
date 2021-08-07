@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ENV } from "../constants/environment";
-const apiUrl = `${ENV.development.apiUrl}/tables`;
+const apiUrl = `${ENV.prod.apiUrl}/tables`;
 
 const TableService = {
 
@@ -21,6 +21,9 @@ const TableService = {
     },
     delete: (id) => {
         return axios.delete(`${apiUrl}/${id}`);
+    },
+    swap: (data) => {
+        return axios.put(`${apiUrl}/swap`, data);
     }
 }
 

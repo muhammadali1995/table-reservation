@@ -34,7 +34,7 @@ const RestaurantEditor = ({ tablesState, tableAction }) => {
     return loading ? (<Typography>Loading</Typography>) :
         (<Grid margin={1} container display='grid' className="grid-container" >
             <DndProvider backend={HTML5Backend}>
-                <Tables referenceNumbers={referenceNumbers} existingTables={existingTables} />
+                <Tables tables={tablesState.tables} referenceNumbers={referenceNumbers} existingTables={existingTables} />
             </DndProvider>
         </Grid>)
 
