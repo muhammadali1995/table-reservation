@@ -19,9 +19,7 @@ const Tables = ({ referenceNumbers, existingTables, tableAction, tables }) => {
         setShowEdit(false);
         setTable(null)
     }
-
-
-
+    
     const swap = (data) => {
         tableService.swap(data).then(res => {
             refresh(res.data);

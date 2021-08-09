@@ -7,7 +7,6 @@ const ReservationService = {
     create: (formData) => {
         return axios.post(apiUrl, formData);
     },
-
     fetchAll: () => {
         return axios.get(apiUrl);
     },
@@ -19,7 +18,12 @@ const ReservationService = {
     },
     update: (id, formData) => {
         return axios.put(`${apiUrl}/${id}`, formData);
+    },
+    fetchAllByRestaurant: () => {
+        return axios.get(`${apiUrl}/by-restaurant`);
     }
+
+
 }
 
 export default ReservationService;

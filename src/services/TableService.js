@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ENV } from "../constants/environment";
-const apiUrl = `${ENV.prod.apiUrl}/tables`;
+const apiUrl = `${ENV.development.apiUrl}/tables`;
 
 const TableService = {
 

@@ -25,6 +25,7 @@ export function Header() {
                     <NavLink to="/editor" className='nav-link'>Layout Editor</NavLink>
 
                     <NavLink to="/reservations" className='nav-link'>Reservation</NavLink>
+                    <NavLink to="/reporting" className='nav-link'>Reports</NavLink>
                 </Box>
                 <div className="ms-auto">
                     {!user ? (
