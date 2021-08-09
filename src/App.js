@@ -1,18 +1,20 @@
 import "./App.css";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { RegisterUserForm } from "./components/user/Register";
-import { LoginForm } from './components/user/Login'
 import axios from "axios";
 import { ENV } from "./constants/environment";
 import { useEffect, useState } from "react";
-import { Home } from './components/home/Home';
-import RestaurantEditor from './components/restaurant/Editor';
-import RestaurantReservation from "./components/reservation/Reservation";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 import userAction from './states/actions/userAction';
 import { CircularProgress } from '@material-ui/core';
+
 import ListReservations from "./components/reservation/list/List";
 import Report from './components/reporting/Report';
+import Home from './components/home/Home';
+import RestaurantEditor from './components/restaurant/Editor';
+import RestaurantReservation from "./components/reservation/Reservation";
+import RegisterUserForm from "./components/user/Register";
+import LoginForm from './components/user/Login'
 
 
 axios.interceptors.request.use(
@@ -32,20 +34,22 @@ axios.interceptors.request.use(
 
 
 
-function App({ userAction }) {
+function App({ userAction, userState }) {
   const [loading, setLoading] = useState(true)
-
-  const dispatch = useDispatch();
-  const { user } = useSelector(state => state.user);
+  const { user } = userState;
 
   useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const fetchUser = async () => {
     let currentUser = localStorage.getItem("user");
     if (currentUser) {
       currentUser = JSON.parse(currentUser);
-      dispatch(userAction(currentUser));
+      userAction(currentUser);
     }
     setLoading(false);
-  }, []);
+  }
 
   return (
     <>
@@ -58,10 +62,9 @@ function App({ userAction }) {
                 <Route path="/editor"><RestaurantEditor /></Route>
                 <Route path='/reservations' exact><RestaurantReservation /></Route>
                 <Route path='/reservations/:id'><ListReservations /></Route>
-                <Route path='/reporting'><Report/></Route>
+                <Route path='/reporting'><Report /></Route>
               </>
             ) : (
-
               <>
                 <Route path="/"> <Redirect to="/login" /></Route>
                 <Route path="/login" component={LoginForm}></Route>
@@ -75,12 +78,14 @@ function App({ userAction }) {
   );
 }
 
-const mapStateToProps = state => ({
-  ...state
-});
+const mapStateToProps = state => {
+  return {
+    userState: state.user,
+  };
+};
 
-const mapDispatchToProps = dispatch => ({
-  userAction: (payload) => dispatch(userAction(payload))
-});
+const mapDispatchToProps = dispatch => bindActionCreators({
+  userAction
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

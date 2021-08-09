@@ -8,14 +8,20 @@ import { Link } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 import { Button, Typography, Box } from '@material-ui/core';
 import { Grid } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { connect } from 'react-redux';  
 import userAction from "../../states/actions/userAction";
 
-export const LoginForm = () => {
+const LoginForm = ({ userAction }) => {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
     const history = useHistory();
-    const dispatch = useDispatch();
+
+    const saveUser = (user) => {
+        AuthService.saveUser(user);
+        userAction(user);
+        history.push("/");
+    }
 
     return (
         <Grid container justifyContent='center' alignItems='center' direction='column' className='h-100'>
@@ -41,9 +47,7 @@ export const LoginForm = () => {
                             AuthService.login(formData).then(
                                 (res) => {
                                     setSubmitting(false);
-                                    AuthService.saveUser(res.data);
-                                    dispatch(userAction(res.data));
-                                    history.push("/");
+                                    saveUser(res.data);
                                 },
                                 (error) => {
                                     console.log(error);
@@ -90,3 +94,9 @@ export const LoginForm = () => {
         </Grid>
     );
 };
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    userAction
+}, dispatch);
+
+export default connect(null, mapDispatchToProps)(LoginForm);

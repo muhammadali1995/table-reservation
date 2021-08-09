@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import { Button, Box, MenuItem } from '@material-ui/core';
 import { TextInput } from "../../form/TextInput";
 import { useState } from "react";
-import { Error } from "../../form/Error";
 import { CustomSelect } from "../../form/Select";
 import { BOOKING_TIMES } from './../../../constants/bookingTimes';
 import { default as reservationService } from './../../../services/ReservationService';

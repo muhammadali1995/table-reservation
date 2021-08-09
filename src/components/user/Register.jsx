@@ -8,14 +8,20 @@ import { Error } from "../form/Error";
 import AuthService from "../../services/AuthService";
 import { Link } from "react-router-dom";
 import { Button, Grid, Typography } from "@material-ui/core";
-import { useDispatch } from "react-redux";
 import userAction from "../../states/actions/userAction";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-export const RegisterUserForm = () => {
+const RegisterUserForm = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+
+  const saveUser = (user) => {
+    userAction(user);
+    AuthService.saveUser(user);
+    history.push("/");
+  }
 
   return (
     <Grid container justifyContent='center' alignItems='center' direction='column' className='h-100'>
@@ -23,7 +29,7 @@ export const RegisterUserForm = () => {
         <Typography variant='h5'>
           Sign up
         </Typography>
-        {error ? <Error message={error} /> : ""}
+        {error ? <Error message={error.message} /> : ""}
         <Formik
           initialValues={{
             name: "",
@@ -51,15 +57,15 @@ export const RegisterUserForm = () => {
             AuthService.register(formData).then(
               (res) => {
                 setSubmitting(false);
-
-                dispatch(userAction(res.data));
-                
-                AuthService.saveUser(res.data);
-                history.push("/");
+                saveUser(res.data);
               },
               (error) => {
                 setSubmitting(false);
-                setError(error);
+                if (error.data) {
+                  setError(error.data);
+                } else {
+                  setError({ message: 'Email is already taken, please choose another email' });
+                }
               }
             );
           }}
@@ -111,3 +117,10 @@ export const RegisterUserForm = () => {
     </Grid>
   );
 };
+
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  userAction
+}, dispatch);
+
+export default connect(null, mapDispatchToProps)(RegisterUserForm);

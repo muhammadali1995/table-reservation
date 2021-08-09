@@ -4,26 +4,34 @@ import { Header } from "../layout/Header";
 import { CreateRestaurant } from './../restaurant/Create';
 import RestaurantService from "../../services/RestaurantService";
 import Loader from './../layout/Loader';
-import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import restaurantAction from "../../states/actions/restaurantAction";
-export const Home = () => {
-    const restaurant = useSelector(state => state.restaurant);
-    const dispatch = useDispatch();
-    const [isBusy, setBusy] = useState(true)
+import { Box } from '@material-ui/core';
+import { bindActionCreators } from "redux";
+import { Redirect } from "react-router-dom";
+
+const Home = ({ restaurantState, restaurantAction }) => {
+    const [isBusy, setBusy] = useState(true);
 
     useEffect(() => {
-        RestaurantService.fetchMyRestaurant().then(response => {
-            dispatch(restaurantAction(response.data));
-            setBusy(false);
-        });
-    }, [dispatch]);
+        fetchRestaurant();
+    }, []);
+
+    const fetchRestaurant = async () => {
+        const response = await RestaurantService.fetchMyRestaurant();
+        restaurantAction(response.data);
+        setBusy(false);
+    }
+    
     return (
         <>
             {isBusy ?
                 (<Loader />)
-                : (restaurant ?
-                    (
+                : (restaurantState.restaurant ?
+                    (<Box>
                         <Header />
+                        <Redirect to='/editor'></Redirect>
+                    </Box>
                     ) : (
                         <CreateRestaurant />
                     )
@@ -32,3 +40,15 @@ export const Home = () => {
         </>
     )
 }
+
+const mapStateToProps = state => {
+    return {
+        restaurantState: state.restaurant,
+    };
+};
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    restaurantAction
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
