@@ -108,7 +108,6 @@ const ListReservations = () => {
         <ListOfReservations reservations={reservations} deleteReservation={deleteReservation} editReservation={editReservation} />
         {showCreateReservation ? <CreateReservation table={table} show={showCreateReservation} handleClose={handleClose} /> : ''}
         {reservation ? <EditReservation reservation={reservation} show={showEditReservation} handleClose={handleEditClose} /> : ''}
-        <Link href='/reservations' color='primary'>Back</Link>
     </Box>
     );
 

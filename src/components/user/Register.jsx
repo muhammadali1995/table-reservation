@@ -12,7 +12,7 @@ import userAction from "../../states/actions/userAction";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-const RegisterUserForm = () => {
+const RegisterUserForm = ({ userAction }) => {
   const history = useHistory();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -20,7 +20,6 @@ const RegisterUserForm = () => {
   const saveUser = (user) => {
     userAction(user);
     AuthService.saveUser(user);
-    history.push("/");
   }
 
   return (
@@ -58,6 +57,7 @@ const RegisterUserForm = () => {
               (res) => {
                 setSubmitting(false);
                 saveUser(res.data);
+                history.push("/");
               },
               (error) => {
                 setSubmitting(false);

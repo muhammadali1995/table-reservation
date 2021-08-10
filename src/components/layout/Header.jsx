@@ -3,9 +3,9 @@ import AuthService from './../../services/AuthService';
 import { AppBar, Toolbar, Box, Typography, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import userAction from "../../states/actions/userAction";
-
-export function Header() {
+const Header = () => {
     const user = useSelector(state => state.user)
+    const { restaurant } = useSelector(state => state.restaurant);
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -22,10 +22,13 @@ export function Header() {
                     <Typography>
                         Reservio
                     </Typography>
-                    <NavLink to="/editor" className='nav-link'>Layout Editor</NavLink>
-
-                    <NavLink to="/reservations" className='nav-link'>Reservation</NavLink>
-                    <NavLink to="/reporting" className='nav-link'>Reports</NavLink>
+                    {restaurant ? (
+                        <>
+                            <NavLink to="/editor" className='nav-link'>Layout Editor</NavLink>
+                            <NavLink to="/reservations" className='nav-link'>Reservation</NavLink>
+                            <NavLink to="/reporting" className='nav-link'>Reports</NavLink>
+                        </>
+                    ) : ""}
                 </Box>
                 <div className="ms-auto">
                     {!user ? (
@@ -53,3 +56,5 @@ export function Header() {
         </AppBar >
     );
 }
+
+export default Header;

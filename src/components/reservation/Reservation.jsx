@@ -9,7 +9,6 @@ import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import ReservationTables from './table/ReservationTables';
 
-
 const RestaurantReservation = ({ tablesState, tableAction, reservationState, reservationsAction }) => {
     const [loading, setLoading] = useState(false);
 

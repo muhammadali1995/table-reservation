@@ -16,8 +16,6 @@ const RestaurantEditor = ({ tablesState, tableAction }) => {
         tableService.fetchAll().then(res => {
             tableAction(res.data);
             setLoading(false);
-        }, error => {
-            console.log(error);
         });
     }, [tableAction]);
 

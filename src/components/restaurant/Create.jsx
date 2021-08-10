@@ -5,10 +5,16 @@ import { Formik, Form } from "formik";
 import { Error } from "../form/Error";
 import RestaurantService from "../../services/RestaurantService";
 import { Button, Grid, Typography, Box } from "@material-ui/core";
+import { useHistory } from 'react-router';
+import { connect } from "react-redux";
+import restaurantAction from './../../states/actions/restaurantAction';
+import { bindActionCreators } from "redux";
 
-export const CreateRestaurant = () => {
+const CreateRestaurant = ({restaurantAction}) => {
+    
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
+    const history = useHistory();
 
     return (
         <Grid container justifyContent='center' alignItems='center' direction='column' className='h-100'>
@@ -31,9 +37,10 @@ export const CreateRestaurant = () => {
                     onSubmit={async (formData) => {
                         setSubmitting(true);
                         RestaurantService.create(formData).then(
-                            () => {
+                            (res) => {
+                                restaurantAction(res.data);
                                 setSubmitting(false);
-                                window.location.reload();
+                                history.push('/editor');
                             },
                             (error) => {
                                 setSubmitting(false);
@@ -65,3 +72,15 @@ export const CreateRestaurant = () => {
         </Grid>
     );
 };
+
+const mapStateToProps = state => {
+    return {
+        tablesState: state.tables
+    };
+};
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    restaurantAction
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateRestaurant);

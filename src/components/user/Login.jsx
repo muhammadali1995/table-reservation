@@ -50,7 +50,6 @@ const LoginForm = ({ userAction }) => {
                                     saveUser(res.data);
                                 },
                                 (error) => {
-                                    console.log(error);
                                     setSubmitting(false);
                                     setError(error.response.data);
                                 }

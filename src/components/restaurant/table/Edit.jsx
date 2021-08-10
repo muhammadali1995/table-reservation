@@ -31,7 +31,7 @@ const EditTable = ({ table, show, handleClose, tableAction, tablesState }) => {
                 tableAction(tables);
                 handleClose();
             }, error => {
-                console.log(error);
+               setError(error.data);
             });
         }
     }
