@@ -3,6 +3,6 @@ export const ENV = {
         apiUrl: "https://table-reservation-api.herokuapp.com",
     },
     development: {
-        apiUrl: "http://localhost:5000",
+        apiUrl: "https://table-reservation-api.herokuapp.com",
     }
 }

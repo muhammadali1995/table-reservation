@@ -5,7 +5,6 @@ import {
     MenuItem,
     InputLabel,
     Button,
-    Link
 } from '@material-ui/core';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -65,7 +64,7 @@ const ListReservations = () => {
         const value = event.target.value;
         setFilters((prevState) => ({
             ...prevState,
-            ['time']: value
+            'time': value
         }));
     }
 
